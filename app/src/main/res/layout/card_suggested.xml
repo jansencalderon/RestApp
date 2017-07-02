@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="restaurant"
+            type="jru.restaurantapp.model.data.Restaurant" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_restaurant"
+            android:drawableTint="#777777"
+            android:text="@{restaurant.restName}"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:targetApi="m" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{restaurant.restAdd}"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{restaurant.restHours}"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`Capacity: `+restaurant.restSlotMax+` persons`}"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</layout>

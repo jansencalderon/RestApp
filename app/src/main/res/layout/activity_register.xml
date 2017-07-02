@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="view"
+            type="jru.restaurantapp.ui.register.RegisterView" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/regbg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:navigationIcon="@drawable/ic_arrow_back_primary"
+                app:titleTextColor="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/registration"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="start"
+                    android:text="@string/account_details"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_top"
+                    android:hint="@string/email"
+                    android:textSize="14sp"
+                    android:inputType="textEmailAddress"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_row"
+                    android:hint="@string/password"
+                    android:textSize="14sp"
+                    android:inputType="textPassword"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_lName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_row"
+                    android:hint="@string/last_name"
+                    android:inputType="textCapWords"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/et_confirmPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_bottom"
+                    android:hint="@string/confirm_password"
+                    android:textSize="14sp"
+                    android:inputType="textPassword"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:text="*Password must be atleast 8 characters\n*Must have at least 1 numeric and special character\n*Atleast 1 capital letter"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="start"
+                    android:text="@string/personal_info"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/et_fName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_top"
+                    android:hint="@string/first_name"
+                    android:textSize="14sp"
+                    android:inputType="textCapWords"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_bday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_row"
+                    android:textSize="14sp"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="@string/birthday"
+                    android:onClick="@{()->view.onBirthdayClicked()}"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_row"
+                    android:hint="@string/contact"
+                    android:textSize="14sp"
+                    android:inputType="phone"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_bottom"
+                    android:hint="@string/address"
+                    android:textSize="14sp"
+                    android:inputType="textCapWords"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:text="Secret Question\nthat will be used on password recovery"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:background="@drawable/edittext_selector"
+                        android:layout_height="wrap_content">
+
+                        <Spinner
+                            android:id="@+id/spinner1"
+                            android:layout_width="match_parent"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown" />
+                    </FrameLayout>
+
+                    <EditText
+                        android:id="@+id/et_answer"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_selector"
+                        android:hint="Answer"
+                        android:textSize="14sp"
+                        android:inputType="textCapCharacters"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/rounded_button_solid"
+                    android:onClick="@{()->view.onSubmit()}"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="view"
+            type="jru.restaurantapp.ui.main.MainView" />
+
+        <variable
+            name="restaurant"
+            type="jru.restaurantapp.model.data.Restaurant" />
+
+        <variable
+            name="contentVisible"
+            type="boolean" />
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/restCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:foreground="?android:selectableItemBackground"
+        android:onClick="@{()->view.OnItemClicked(restaurant)}"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/restImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#eeeeee"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/restImage"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_restaurant"
+                    android:drawableTint="#777777"
+                    android:text="@{restaurant.restName}"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:targetApi="m" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{restaurant.restAdd}"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{restaurant.restHours}"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`Capacity: `+restaurant.restSlotMax+` persons`}"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+</layout>
