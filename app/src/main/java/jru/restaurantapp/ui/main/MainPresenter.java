@@ -10,7 +10,6 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import jru.restaurantapp.app.App;
-import jru.restaurantapp.model.data.Restaurant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

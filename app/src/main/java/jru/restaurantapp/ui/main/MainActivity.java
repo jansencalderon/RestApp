@@ -1,6 +1,5 @@
 package jru.restaurantapp.ui.main;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -21,10 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,11 +29,11 @@ import io.realm.Realm;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityMainBinding;
-import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.ui.login.LoginActivity;
 import jru.restaurantapp.ui.map.MapActivity;
 import jru.restaurantapp.ui.profile.ProfileActivity;
+import jru.restaurantapp.ui.restaurant.RestaurantActivity;
 
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -163,7 +160,9 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void OnItemClicked
             (Restaurant restaurant) {
-        showAlert(restaurant.getRestName());
+        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+        intent.putExtra("id",restaurant.getRestId());
+        startActivity(intent);
     }
 
     @Override

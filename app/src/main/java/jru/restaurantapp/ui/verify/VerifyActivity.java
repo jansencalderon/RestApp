@@ -40,8 +40,6 @@ public class VerifyActivity extends MvpActivity<VerifyView, VerifyPresenter> imp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verify);
-
         setRetainInstance(true);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_verify);
         binding.setView(getMvpView());

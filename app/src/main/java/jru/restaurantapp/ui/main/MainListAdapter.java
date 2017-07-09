@@ -13,7 +13,6 @@ import java.util.List;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.CardRestBinding;
-import jru.restaurantapp.model.data.Restaurant;
 
 /**
  * Created by Mark Jansen Calderon on 1/12/2017.

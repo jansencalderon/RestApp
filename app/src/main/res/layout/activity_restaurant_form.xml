@@ -1,0 +1,158 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="restaurant"
+            type="jru.restaurantapp.model.data.Restaurant" />
+
+        <variable
+            name="view"
+            type="jru.restaurantapp.ui.restaurant.form.RestaurantFormView" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="jru.restaurantapp.ui.restaurant.form.RestaurantFormActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back_primary"
+            app:titleTextColor="@color/colorPrimaryDark" />
+
+        <LinearLayout
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@{`Reservation at `+restaurant.restName}"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_when"
+                android:gravity="center_vertical"
+                android:hint="What time?"
+                android:padding="6dp"
+                android:textColor="@color/darkGray"
+                android:textSize="16sp" />"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_selector"
+                    android:clickable="true"
+                    android:hint="10"
+                    android:inputType="number"
+                    android:maxLines="2"
+                    android:onClick="@{()->view.pickTime()}"
+                    android:padding="10dp"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/tvAM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:alpha="0.5"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:onClick="@{()->view.onAM()}"
+                    android:padding="6dp"
+                    android:text="AM"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.5"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:onClick="@{()->view.onPM()}"
+                    android:padding="6dp"
+                    android:text="PM"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:drawableEnd="@drawable/ic_guest"
+                android:gravity="center_vertical"
+                android:hint="For how many?"
+                android:padding="6dp"
+                android:textColor="@color/darkGray"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_selector"
+                    android:hint="10"
+                    android:inputType="number"
+                    android:maxLines="3"
+                    android:padding="10dp"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.5"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:padding="6dp"
+                    android:text="person/s"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="CONTINUE"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>
