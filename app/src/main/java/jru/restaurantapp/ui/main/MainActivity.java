@@ -37,6 +37,7 @@ import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.ui.login.LoginActivity;
 import jru.restaurantapp.ui.map.MapActivity;
 import jru.restaurantapp.ui.profile.ProfileActivity;
+import jru.restaurantapp.ui.restaurant.RestaurantActivity;
 
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -163,7 +164,9 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     @Override
     public void OnItemClicked
             (Restaurant restaurant) {
-        showAlert(restaurant.getRestName());
+        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+        intent.putExtra("id",restaurant.getRestId());
+        startActivity(intent);
     }
 
     @Override

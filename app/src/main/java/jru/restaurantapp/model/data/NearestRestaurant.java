@@ -9,7 +9,7 @@ import io.realm.RealmObject;
  * Created by Jansen on 6/29/2017.
  */
 
-public class Restaurant extends RealmObject{
+public class NearestRestaurant extends RealmObject{
 
     @SerializedName("rest_id")
     @Expose

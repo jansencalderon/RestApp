@@ -70,6 +70,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </android.support.v7.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/buttonShowNearest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:onClick="@{() -> view.onShowNearest()}"
+                android:layout_margin="6dp"
+                android:background="@drawable/rounded_button_solid"
+                android:padding="10dp"
+                android:text="SHOW NEAREST RESTAURANTS"
+                android:textColor="@color/white" />
         </FrameLayout>
     </LinearLayout>
 </layout>

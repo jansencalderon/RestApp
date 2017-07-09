@@ -3,10 +3,13 @@ package jru.restaurantapp.ui.map;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,16 +36,24 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
+import io.realm.Sort;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityMapsBinding;
 import jru.restaurantapp.databinding.DialogMapBinding;
+import jru.restaurantapp.databinding.DialogNearestBinding;
+import jru.restaurantapp.model.data.NearestRestaurant;
 import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.ui.forgot.ForgotPasswordActivity;
+import jru.restaurantapp.ui.main.MainListAdapter;
+import jru.restaurantapp.ui.restaurant.RestaurantActivity;
 import jru.restaurantapp.utils.BitmapUtils;
+import jru.restaurantapp.utils.MapUtils;
 
 public class MapActivity extends MvpActivity<MapView, MapPresenter> implements MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -55,6 +66,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private PlaceAutocompleteFragment autocompleteFragment;
     private Marker myMarker = null;
     private ActivityMapsBinding binding;
+    private MapListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +93,12 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .setTypeFilter(Place.TYPE_COUNTRY)
+                .setCountry("PH")
                 .build();
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setHint("Where are you?");
+        autocompleteFragment.setBoundsBias(new LatLngBounds(new LatLng(14.503863, 120.859556), new LatLng(14.767616, 121.088896)));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -97,8 +111,9 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 myMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng())
                         .icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(MapActivity.this, markerUserIcon))));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 15));
+                presenter.getNearest(place.getLatLng().latitude, place.getLatLng().longitude);
 
-
+                binding.buttonShowNearest.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -107,6 +122,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        binding.buttonShowNearest.setVisibility(View.GONE);
 
     }
 
@@ -121,6 +138,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         super.onStop();
         presenter.onStop();
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -144,12 +162,58 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             bounds = builder.build();
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
             mMap.animateCamera(cu);
-            autocompleteFragment.setBoundsBias(bounds);
         }
 
 
     }
 
+
+    @Override
+    public void onShowNearest(){
+        //hide green button
+        binding.buttonShowNearest.setVisibility(View.GONE);
+
+        DialogNearestBinding dialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_nearest,
+                null,
+                false);
+        final Dialog dialog = new Dialog(MapActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(dialogBinding.getRoot());
+
+        dialogBinding.dialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                binding.buttonShowNearest.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //adapter
+        dialogBinding.nearestRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MapListAdapter(this);
+        dialogBinding.nearestRecyclerView.setAdapter(adapter);
+
+
+        setNearestRestaurants(realm.where(NearestRestaurant.class).findAll().sort("distance", Sort.ASCENDING));
+        dialog.show();
+    }
+
+
+    @Override
+    public void setNearestRestaurants(List<NearestRestaurant> restaurantList) {
+        adapter.setList(restaurantList);
+    }
+
+    @Override
+    public void OnItemClicked(NearestRestaurant nearestRestaurant){
+        Intent intent = new Intent(MapActivity.this, RestaurantActivity.class);
+        intent.putExtra("id",nearestRestaurant.getRestId());
+        startActivity(intent);
+    }
 
     @Override
     public void startLoading(String s) {
@@ -196,7 +260,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Restaurant restaurant = realm.where(Restaurant.class).equalTo("restId", Integer.parseInt(marker.getSnippet())).findFirst();
+        final Restaurant restaurant = realm.where(Restaurant.class).equalTo("restId", Integer.parseInt(marker.getSnippet())).findFirst();
         DialogMapBinding dialogBinding = DataBindingUtil.inflate(
                 getLayoutInflater(),
                 R.layout.dialog_map,
@@ -215,7 +279,14 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 dialog.dismiss();
             }
         });
-
+        dialogBinding.inquire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapActivity.this, RestaurantActivity.class);
+                intent.putExtra("id",restaurant.getRestId());
+                startActivity(intent);
+            }
+        });
         dialog.show();
 
         return true;
