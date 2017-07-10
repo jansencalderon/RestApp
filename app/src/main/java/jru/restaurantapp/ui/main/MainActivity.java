@@ -29,6 +29,7 @@ import io.realm.Realm;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityMainBinding;
+import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.ui.login.LoginActivity;
 import jru.restaurantapp.ui.map.MapActivity;

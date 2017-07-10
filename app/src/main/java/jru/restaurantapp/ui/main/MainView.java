@@ -4,6 +4,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 
 

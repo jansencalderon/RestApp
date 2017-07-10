@@ -9,80 +9,98 @@
             type="jru.restaurantapp.ui.map.MapView" />
     </data>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Restaurant Finder" />
-
-        </android.support.design.widget.AppBarLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <AutoCompleteTextView
-                android:id="@+id/autoCompleteTextView"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/edittext_selector"
-                android:fontFamily="sans-serif-light"
-                android:hint="Where are you?..."
-                android:padding="10dp"
-                android:visibility="gone">
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-                <requestFocus />
-            </AutoCompleteTextView>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:title="Restaurant Finder" />
 
+            </android.support.design.widget.AppBarLayout>
 
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="jru.restaurantapp.ui.map.MapActivity" />
+                android:layout_height="match_parent">
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_margin="5dp"
-                card_view:cardCornerRadius="2dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/edittext_selector"
+                    android:fontFamily="sans-serif-light"
+                    android:hint="Where are you?..."
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <requestFocus />
+                </AutoCompleteTextView>
+
 
                 <fragment
-                    android:id="@+id/place_autocomplete_fragment"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </android.support.v7.widget.CardView>
+                    android:layout_height="match_parent"
+                    tools:context="jru.restaurantapp.ui.map.MapActivity" />
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="5dp"
+                    card_view:cardCornerRadius="2dp">
+
+                    <fragment
+                        android:id="@+id/place_autocomplete_fragment"
+                        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </android.support.v7.widget.CardView>
 
 
-            <TextView
-                android:id="@+id/buttonShowNearest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:onClick="@{() -> view.onShowNearest()}"
-                android:layout_margin="6dp"
-                android:background="@drawable/rounded_button_solid"
-                android:padding="10dp"
-                android:text="SHOW NEAREST RESTAURANTS"
-                android:textColor="@color/white" />
-        </FrameLayout>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/buttonShowNearest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/rounded_button_solid"
+                    android:onClick="@{() -> view.onShowNearest()}"
+                    android:padding="10dp"
+                    android:text="SHOW NEAREST RESTAURANTS"
+                    android:textColor="@color/white" />
+
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_user"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="auto" />
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

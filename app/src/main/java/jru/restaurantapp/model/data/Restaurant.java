@@ -20,9 +20,15 @@ public class Restaurant extends RealmObject{
     @SerializedName("rest_add")
     @Expose
     private String restAdd;
+
+    @SerializedName("rest_category")
+    @Expose
+    private String restCategory;
+
     @SerializedName("rest_contact")
     @Expose
     private String restContact;
+
     @SerializedName("rest_hours")
     @Expose
     private String restHours;
@@ -152,5 +158,14 @@ public class Restaurant extends RealmObject{
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+
+    public String getRestCategory() {
+        return restCategory;
+    }
+
+    public void setRestCategory(String restCategory) {
+        this.restCategory = restCategory;
     }
 }

@@ -13,6 +13,7 @@ import io.realm.Realm;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityRestaurantBinding;
+import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.ui.restaurant.form.RestaurantFormActivity;
 
 public class RestaurantActivity extends MvpActivity<RestaurantView,RestaurantPresenter> implements RestaurantView {

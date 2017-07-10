@@ -9,7 +9,7 @@ import io.realm.RealmObject;
  * Created by Jansen on 6/29/2017.
  */
 
-public class NearestRestaurant extends RealmObject{
+public class NearestRestaurant extends RealmObject {
 
     @SerializedName("rest_id")
     @Expose
@@ -17,6 +17,9 @@ public class NearestRestaurant extends RealmObject{
     @SerializedName("rest_name")
     @Expose
     private String restName;
+    @SerializedName("rest_category")
+    @Expose
+    private String restCategory;
     @SerializedName("rest_add")
     @Expose
     private String restAdd;
@@ -152,5 +155,13 @@ public class NearestRestaurant extends RealmObject{
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public String getRestCategory() {
+        return restCategory;
+    }
+
+    public void setRestCategory(String restCategory) {
+        this.restCategory = restCategory;
     }
 }
