@@ -54,7 +54,7 @@
             android:name=".ui.map.MapActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".ui.restaurant.RestaurantActivity" />
-        <activity android:name=".ui.restaurant.form.RestaurantFormActivity"></activity>
+        <activity android:name=".ui.restaurant.form.RestaurantFormActivity" />
     </application>
 
 </manifest>
