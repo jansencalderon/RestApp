@@ -85,7 +85,6 @@ class MainPresenter extends MvpNullObjectBasePresenter<MainView> {
             List<Restaurant> restaurantList;
             restaurantList = realm.copyFromRealm(restaurants);
             getView().setRestaurants(restaurantList);
-          //  getView().showAlert(restaurantList.get(0).getRestName());
         }
 
     }

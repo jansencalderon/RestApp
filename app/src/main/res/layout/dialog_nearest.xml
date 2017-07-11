@@ -2,27 +2,45 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:minWidth="600dp"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/dialog_close"
-            android:background="@drawable/rounded_button_red"
-            android:layout_gravity="bottom|center"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
             android:layout_width="wrap_content"
-            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="6dp"
+            android:background="@drawable/rounded_button_red"
             android:gravity="center"
+            android:padding="10dp"
             android:text="HIDE NEAREST RESTAURANTS"
             android:textColor="@color/white" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button_red">
+
+            <Spinner
+                android:id="@+id/dialog_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_margin="6dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="HIDE NEAREST RESTAURANTS"
+                android:textColor="@color/white" />
+        </FrameLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/nearestRecyclerView"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

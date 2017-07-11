@@ -75,15 +75,6 @@
                     android:inputType="textPassword"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/et_lName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/group_row"
-                    android:hint="@string/last_name"
-                    android:inputType="textCapWords"
-                    android:padding="8dp"
-                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/et_confirmPass"
@@ -122,6 +113,15 @@
                     android:textSize="14sp"
                     android:inputType="textCapWords"
                     android:padding="8dp" />
+                <EditText
+                    android:id="@+id/et_lName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/group_row"
+                    android:hint="@string/last_name"
+                    android:inputType="textCapWords"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/et_bday"

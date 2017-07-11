@@ -79,6 +79,20 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
 
     }
 
+
+    @Override
+    public void onToday() {
+        binding.tvToday.setAlpha(1);
+        binding.tvTomorrow.setAlpha(0.5f);
+    }
+
+    @Override
+    public void onTomorrow() {
+        binding.tvTomorrow.setAlpha(1);
+        binding.tvToday.setAlpha(0.5f);
+
+    }
+
     @Override
     public void pickTime() {
 

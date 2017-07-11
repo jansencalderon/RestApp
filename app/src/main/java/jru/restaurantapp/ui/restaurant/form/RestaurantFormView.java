@@ -12,5 +12,9 @@ public interface RestaurantFormView extends MvpView{
 
     void onAM();
 
+    void onToday();
+
+    void onTomorrow();
+
     void pickTime();
 }

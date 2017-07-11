@@ -90,12 +90,12 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
                 realm.delete(NearestRestaurant.class);
             }
         });
-
         for (Restaurant restaurant : restaurants) {
             Double distance = MapUtils.distance(latitude, longitude, restaurant.getRestLat(), restaurant.getRestLng());
             final NearestRestaurant nearest = new NearestRestaurant();
             nearest.setRestId(restaurant.getRestId());
             nearest.setRestName(restaurant.getRestName());
+            nearest.setRestCategory(restaurant.getRestCategory());
             nearest.setRestAdd(restaurant.getRestAdd());
             nearest.setRestContact(restaurant.getRestContact());
             nearest.setRestHours(restaurant.getRestHours());
@@ -110,9 +110,6 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
                 }
             });
         }
-
-        List<NearestRestaurant> nearestRestaurants = new ArrayList<>();
-        nearestRestaurants = realm.where(NearestRestaurant.class).findAll().sort("distance", Sort.ASCENDING);
         getView().stopLoading();
 
     }

@@ -127,7 +127,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         name.setText(user.getFullName());
         Glide.with(this)
                 .load(Constants.URL_IMAGE + user.getImage())
-                .error(R.drawable.ic_gallery)
                 .into(circleImageView);
 
     }

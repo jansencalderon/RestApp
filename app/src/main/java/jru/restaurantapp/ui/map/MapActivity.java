@@ -10,8 +10,10 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -24,8 +26,13 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -56,8 +63,9 @@ import jru.restaurantapp.model.data.NearestRestaurant;
 import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.ui.restaurant.RestaurantActivity;
 import jru.restaurantapp.utils.BitmapUtils;
+import jru.restaurantapp.utils.FusedLocation;
 
-public class MapActivity extends MvpActivity<MapView, MapPresenter> implements MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapActivity extends MvpActivity<MapView, MapPresenter> implements MapView, OnMapReadyCallback , GoogleMap.OnMarkerClickListener{
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private GoogleMap mMap;
     private ProgressDialog progressDialog;
@@ -69,22 +77,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private Marker myMarker = null;
     private ActivityMapsBinding binding;
     private MapListAdapter adapter;
-
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
-
-    private Location mLastLocation;
-    // boolean flag to toggle periodic location updates
-    private boolean mRequestingLocationUpdates = false;
-
-
-    // Location updates intervals in sec
-    private static int UPDATE_INTERVAL = 10000; // 10 sec
-    private static int FATEST_INTERVAL = 5000; // 5 sec
-    private static int DISPLACEMENT = 10; // 10 meters
-
-
-    // Google client to interact with Google API
-    private GoogleApiClient mGoogleApiClient;
+    private FusedLocation fusedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,34 +91,35 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         realm = Realm.getDefaultInstance();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
         initializeMap();
 
-        binding.buttonShowNearest.setVisibility(View.GONE);
-
-        presenter.onStart();
-      //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocation = new FusedLocation(this, new FusedLocation.Callback(){
+            @Override
+            public void onLocationResult(Location location){
+                setMyMarker(new LatLng(location.getLatitude(),location.getLatitude()));
+            }
+        });;
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  mFusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                // Got last known location. In some rare situations this can be null.
-                                if (location != null) {
-                                    // ...
-                                }
-                            }
-                        });*/
+                if (!fusedLocation.isGPSEnabled()){
+                    fusedLocation.showSettingsAlert();
+                }else{
+                    fusedLocation.getCurrentLocation(1);
+                }
             }
         });
 
+        binding.buttonShowNearest.setVisibility(View.GONE);
 
 
     }
 
     private void initializeMap() {
+        if (!isGooglePlayServicesAvailable()) {
+            finish();
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -148,15 +142,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());//get place details here
                 //my marker
-                if (myMarker != null) {
-                    myMarker.remove();
-                }
-                myMarker = mMap.addMarker(new MarkerOptions().position(place.getLatLng())
-                        .icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(MapActivity.this, markerUserIcon))));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 15));
-                presenter.getNearest(place.getLatLng().latitude, place.getLatLng().longitude);
-
-                binding.buttonShowNearest.setVisibility(View.VISIBLE);
+                setMyMarker(place.getLatLng());
             }
 
             @Override
@@ -165,6 +151,20 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+    }
+
+    private void setMyMarker(LatLng latLng) {
+        if (myMarker != null) {
+            myMarker.remove();
+        }
+        myMarker = mMap.addMarker(new MarkerOptions().position(latLng)
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(MapActivity.this, markerUserIcon))));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 15));
+
+        binding.buttonShowNearest.setVisibility(View.VISIBLE);
+
+        presenter.getNearest(myMarker.getPosition().longitude,myMarker.getPosition().latitude);
     }
 
     @NonNull
@@ -174,19 +174,12 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.onStop();
-    }
-
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
 
         //create markers
-        List<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
+    /*    List<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         MarkerOptions markerOptions = new MarkerOptions();
         if (!restaurants.isEmpty()) {
@@ -202,8 +195,10 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             bounds = builder.build();
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
             mMap.animateCamera(cu);
-        }
+        }*/
 
+
+        presenter.onStart();
 
     }
 
@@ -351,13 +346,21 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                     Manifest.permission. ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
 
-                //Request location updates:
+
 
             }
         }
 
     }
-
+    private boolean isGooglePlayServicesAvailable() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status) {
+            return true;
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
 
     //permishit
     public boolean checkLocationPermission() {
@@ -431,5 +434,19 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
+
+
+
 
 }
