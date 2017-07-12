@@ -26,12 +26,12 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
     private Realm realm;
 
-    public void onStart() {
+    void onStart() {
         realm = Realm.getDefaultInstance();
         getRestaurants();
     }
 
-    private void getRestaurants() {
+    public void getRestaurants() {
         getView().startLoading("Getting data...");
         App.getInstance().getApiInterface().getRestaurants().enqueue(new Callback<List<Restaurant>>() {
             @Override

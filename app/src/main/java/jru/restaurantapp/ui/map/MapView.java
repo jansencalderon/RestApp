@@ -11,7 +11,7 @@ import jru.restaurantapp.model.data.NearestRestaurant;
  */
 
 public interface MapView extends MvpView {
-    void onShowNearest();
+    void showNearest();
 
     void setNearestRestaurants(List<NearestRestaurant> restaurantList);
 

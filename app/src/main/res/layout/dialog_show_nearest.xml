@@ -24,9 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/edittext_selector">
-
+            android:background="@drawable/edittext_selector"
+            android:layout_marginRight="16dp">
             <Spinner
                 android:id="@+id/dialog_spinner"
                 android:layout_width="match_parent"
@@ -34,11 +33,11 @@
                 android:layout_gravity="bottom|center"
                 android:layout_margin="6dp"
                 android:gravity="center"
-                android:padding="10dp"
                 android:textColor="@color/white" />
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
             android:id="@+id/nearestRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
