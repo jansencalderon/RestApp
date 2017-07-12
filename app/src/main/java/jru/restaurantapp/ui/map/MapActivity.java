@@ -19,9 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -96,6 +98,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         fusedLocation = new FusedLocation(this, new FusedLocation.Callback(){
             @Override
             public void onLocationResult(Location location){
+                Log.e(TAG, "Location Triggered\n"+location.getLongitude()+","+location.getLatitude());
                 setMyMarker(new LatLng(location.getLatitude(),location.getLatitude()));
             }
         });;
@@ -106,6 +109,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                     fusedLocation.showSettingsAlert();
                 }else{
                     fusedLocation.getCurrentLocation(1);
+                    Log.e(TAG, "Getting Location");
                 }
             }
         });
@@ -254,7 +258,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     public void startLoading(String s) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(MapActivity.this);
-            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setMessage(s);
         }
         progressDialog.show();
@@ -301,12 +305,13 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 R.layout.dialog_map,
                 null,
                 false);
-        final Dialog dialog = new Dialog(MapActivity.this);
+        final Dialog dialog = new Dialog(MapActivity.this, R.style.CustomDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(dialogBinding.getRoot());
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         dialogBinding.setRestaurant(restaurant);
+        dialog.setCancelable(false);
         Glide.with(this).load(Constants.URL_IMAGE + restaurant.getRestImage().concat(".jpg")).into(dialogBinding.restImage);
         dialogBinding.close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -443,6 +448,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     @Override
     public void onStop() {
         super.onStop();
+        presenter.onStop();
         realm.close();
     }
 

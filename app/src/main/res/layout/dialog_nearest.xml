@@ -10,20 +10,22 @@
 
         <TextView
             android:id="@+id/dialog_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
             android:layout_margin="6dp"
             android:background="@drawable/rounded_button_red"
             android:gravity="center"
             android:padding="10dp"
-            android:text="HIDE NEAREST RESTAURANTS"
+            android:text="X"
             android:textColor="@color/white" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button_red">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/edittext_selector">
 
             <Spinner
                 android:id="@+id/dialog_spinner"
@@ -33,13 +35,11 @@
                 android:layout_margin="6dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="HIDE NEAREST RESTAURANTS"
                 android:textColor="@color/white" />
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/nearestRecyclerView"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

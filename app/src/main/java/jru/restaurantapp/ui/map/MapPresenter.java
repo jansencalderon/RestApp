@@ -28,7 +28,6 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
 
     public void onStart() {
         realm = Realm.getDefaultInstance();
-
         getRestaurants();
     }
 
@@ -37,8 +36,8 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
         App.getInstance().getApiInterface().getRestaurants().enqueue(new Callback<List<Restaurant>>() {
             @Override
             public void onResponse(Call<List<Restaurant>> call, final Response<List<Restaurant>> response) {
-                if (response.isSuccessful()) {
-                    getView().stopLoading();
+                getView().stopLoading();
+                if (response.isSuccessful() || response.body().isEmpty()) {
                     final Realm realm = Realm.getDefaultInstance();
                     realm.executeTransactionAsync(new Realm.Transaction() {
                         @Override
@@ -60,7 +59,6 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
                         }
                     });
                 } else {
-                    getView().stopLoading();
                     getView().showAlert(response.message() != null ? response.message()
                             : "Unknown Error");
                 }
@@ -82,6 +80,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
 
 
     void getNearest(double latitude, double longitude) {
+        final Realm realm = Realm.getDefaultInstance();
         getView().startLoading("calculating distance...");
         List<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
         realm.executeTransaction(new Realm.Transaction() {
@@ -111,6 +110,6 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
             });
         }
         getView().stopLoading();
-
+        realm.close();
     }
 }
