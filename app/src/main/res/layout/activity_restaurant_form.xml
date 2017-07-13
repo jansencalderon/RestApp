@@ -48,7 +48,6 @@
                 android:drawableEnd="@drawable/ic_when"
                 android:gravity="center_vertical"
                 android:hint="When?"
-                android:padding="6dp"
                 android:textColor="@color/darkGray"
                 android:textSize="16sp" />"
 
@@ -61,7 +60,6 @@
                     android:id="@+id/tvToday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:alpha="0.5"
                     android:background="?selectableItemBackground"
                     android:clickable="true"
@@ -110,7 +108,7 @@
                     android:clickable="true"
                     android:hint="10"
                     android:inputType="number"
-                    android:maxLines="2"
+                    android:maxEms="2"
                     android:onClick="@{()->view.pickTime()}"
                     android:padding="10dp"
                     android:textSize="30sp" />
@@ -180,10 +178,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_selector"
-                    android:hint="10"
+                    android:hint=""
+                    android:ems="2"
                     android:inputType="number"
                     android:maxLines="3"
                     android:padding="10dp"
+                    android:maxEms="3"
                     android:textSize="30sp" />
 
                 <TextView

@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Jansen on 6/29/2017.
@@ -11,6 +12,7 @@ import io.realm.RealmObject;
 
 public class NearestRestaurant extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("rest_id")
     @Expose
     private Integer restId;

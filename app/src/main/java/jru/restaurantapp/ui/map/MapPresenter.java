@@ -83,6 +83,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
         final Realm realm = Realm.getDefaultInstance();
         getView().startLoading("calculating distance...");
         List<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
+
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -105,7 +106,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    realm.copyToRealm(nearest);
+                    realm.copyToRealmOrUpdate(nearest);
                 }
             });
         }

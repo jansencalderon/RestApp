@@ -97,7 +97,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             @Override
             public void onLocationResult(Location location) {
                 Log.e(TAG, "Location Triggered\n" + location.getLongitude() + "," + location.getLatitude());
-                setMyMarker(new LatLng(location.getLatitude(), location.getLatitude()));
+                stopLoading();
+                setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()));
             }
         });
         ;
@@ -108,6 +109,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                     fusedLocation.showSettingsAlert();
                 } else {
                     fusedLocation.getCurrentLocation(1);
+                    startLoading("Getting location...");
                     Log.e(TAG, "Getting Location");
                 }
             }
@@ -146,6 +148,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 Log.i(TAG, "Place: " + place.getName());//get place details here
                 //my marker
                 setMyMarker(place.getLatLng());
+                Log.i(TAG, "Place Coordinates: " + place.getLatLng());//get place details here
             }
 
             @Override
@@ -163,11 +166,11 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         }
         myMarker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(MapActivity.this, markerUserIcon))));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myMarker.getPosition(), 15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
         binding.buttonShowNearest.setVisibility(View.VISIBLE);
 
-        presenter.getNearest(myMarker.getPosition().longitude, myMarker.getPosition().latitude);
+        presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude);
     }
 
     @NonNull
@@ -181,24 +184,6 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.599512, 120.984222), 15));
-        //create markers
-    /*    List<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        MarkerOptions markerOptions = new MarkerOptions();
-        if (!restaurants.isEmpty()) {
-            for (Restaurant restaurant : restaurants) {
-                markerOptions.position(new LatLng(restaurant.getRestLat(), restaurant.getRestLng()));
-                markerOptions.title(restaurant.getRestName());
-                markerOptions.snippet(restaurant.getRestId() + "");
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(this, markerRestIcon)));
-                builder.include(markerOptions.getPosition());
-                mMap.addMarker(markerOptions);
-
-            }
-            bounds = builder.build();
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
-            mMap.animateCamera(cu);
-        }*/
 
 
         presenter.onStart();
@@ -242,7 +227,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
 
         //spinner
-        final List<NearestRestaurant> tempItems = realm.copyFromRealm(nearestRestaurants.where().distinct("restCategory"));
+        final List<NearestRestaurant> tempItems = realm.copyFromRealm(nearestRestaurants.where().distinct("restCategory").sort("distance", Sort.ASCENDING));
         final List<String> items = new ArrayList<>();
         if (!items.isEmpty()) {
             items.clear();
@@ -259,7 +244,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 if(items.get(position).equals("Show All")){
                     setNearestRestaurants(tempItems);
                 }else{
-                    setNearestRestaurants(nearestRestaurants.where().equalTo("restCategory",items.get(position)).findAll());
+                    setNearestRestaurants(nearestRestaurants.where().equalTo("restCategory",items.get(position)).findAll().sort("distance", Sort.ASCENDING));
                 }
             }
 
