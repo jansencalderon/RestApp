@@ -11,4 +11,6 @@ import jru.restaurantapp.model.data.Restaurant;
 public interface RestaurantView extends MvpView{
 
     void OnReserve(Restaurant restaurant);
+
+    void setRestaurant(Restaurant restaurant);
 }

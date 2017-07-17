@@ -3,6 +3,7 @@ package jru.restaurantapp.model.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -53,6 +54,10 @@ public class Restaurant extends RealmObject{
     @SerializedName("rest_password")
     @Expose
     private String restPassword;
+
+    @SerializedName("products")
+    @Expose
+    private RealmList<Product> products;
 
     private double distance;
 
@@ -167,5 +172,13 @@ public class Restaurant extends RealmObject{
 
     public void setRestCategory(String restCategory) {
         this.restCategory = restCategory;
+    }
+
+    public RealmList<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(RealmList<Product> products) {
+        this.products = products;
     }
 }

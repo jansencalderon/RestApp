@@ -4,27 +4,25 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
-
-import io.realm.Realm;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityRestaurantBinding;
 import jru.restaurantapp.model.data.Restaurant;
+import jru.restaurantapp.ui.main.MainListAdapter;
 import jru.restaurantapp.ui.restaurant.form.RestaurantFormActivity;
 
 public class RestaurantActivity extends MvpActivity<RestaurantView,RestaurantPresenter> implements RestaurantView {
 
     ActivityRestaurantBinding binding;
-    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realm = Realm.getDefaultInstance();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_restaurant);
         binding.setView(getMvpView());
 
@@ -37,14 +35,9 @@ public class RestaurantActivity extends MvpActivity<RestaurantView,RestaurantPre
 
 
         Intent i = getIntent();
-        Restaurant restaurant = realm.where(Restaurant.class).equalTo("restId", i.getIntExtra("id",0)).findFirst();
-        binding.setRestaurant(restaurant);
 
-
-        Glide.with(this)
-                .load(Constants.URL_IMAGE + restaurant.getRestImage().concat(".jpg"))
-                .centerCrop()
-                .into(binding.eventImage);
+        presenter.onStart();
+        presenter.getData(i.getIntExtra("id",0));
 
     }
 
@@ -53,6 +46,22 @@ public class RestaurantActivity extends MvpActivity<RestaurantView,RestaurantPre
         Intent intent = new Intent(RestaurantActivity.this, RestaurantFormActivity.class);
         intent.putExtra("id",restaurant.getRestId());
         startActivity(intent);
+    }
+
+    @Override
+    public void setRestaurant(Restaurant restaurant) {
+        binding.setRestaurant(restaurant);
+        Glide.with(this)
+                .load(Constants.URL_IMAGE + restaurant.getRestImage().concat(".jpg"))
+                .centerCrop()
+                .into(binding.eventImage);
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        ProductListAdapter adapter = new ProductListAdapter(getMvpView());
+        binding.recyclerView.setAdapter(adapter);
+        if(!restaurant.getProducts().isEmpty()){
+            adapter.setList(restaurant.getProducts());
+        }
     }
 
     @NonNull
@@ -64,7 +73,7 @@ public class RestaurantActivity extends MvpActivity<RestaurantView,RestaurantPre
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.close();
+        presenter.onStop();
     }
 
     @Override
