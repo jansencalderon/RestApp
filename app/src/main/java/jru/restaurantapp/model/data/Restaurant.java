@@ -3,6 +3,8 @@ package jru.restaurantapp.model.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.String;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
@@ -33,6 +35,13 @@ public class Restaurant extends RealmObject{
     @SerializedName("rest_hours")
     @Expose
     private String restHours;
+    @SerializedName("rest_hours_open")
+    @Expose
+    private String restHoursOpen;
+
+    @SerializedName("rest_hours_close")
+    @Expose
+    private String restHoursClose;
     @SerializedName("rest_lat")
     @Expose
     private Double restLat;
@@ -99,6 +108,22 @@ public class Restaurant extends RealmObject{
 
     public void setRestHours(String restHours) {
         this.restHours = restHours;
+    }
+
+    public String getRestHoursOpen() {
+        return restHoursOpen;
+    }
+
+    public void setRestHoursOpen(String restHoursOpen) {
+        this.restHoursOpen = restHoursOpen;
+    }
+
+    public String getRestHoursClose() {
+        return restHoursClose;
+    }
+
+    public void setRestHoursClose(String restHoursClose) {
+        this.restHoursClose = restHoursClose;
     }
 
     public Double getRestLat() {

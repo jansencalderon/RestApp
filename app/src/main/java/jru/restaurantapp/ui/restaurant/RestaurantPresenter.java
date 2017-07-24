@@ -30,4 +30,6 @@ public class RestaurantPresenter extends MvpNullObjectBasePresenter<RestaurantVi
     void onStop(){
         realm.close();
     }
+
+
 }

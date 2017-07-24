@@ -107,6 +107,7 @@
                     android:background="@drawable/edittext_selector"
                     android:clickable="true"
                     android:hint="10"
+                    android:focusable="false"
                     android:inputType="number"
                     android:maxEms="2"
                     android:onClick="@{()->view.pickTime()}"
@@ -118,7 +119,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:alpha="0.5"
                     android:background="?selectableItemBackground"
                     android:clickable="true"
                     android:onClick="@{()->view.onAM()}"
@@ -151,6 +151,13 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@{restaurant.restHours}"
+                android:padding="6dp"
+                android:textSize="12sp"/>
 
             <include
                 android:layout_height="1dp"
@@ -180,6 +187,7 @@
                     android:background="@drawable/edittext_selector"
                     android:hint=""
                     android:ems="2"
+                    android:id="@+id/et_head_count"
                     android:inputType="number"
                     android:maxLines="3"
                     android:padding="10dp"
@@ -212,7 +220,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="CONTINUE"
+                android:onClick="@{()->view.sendReservation()}"
+                android:text="@string/string_continue"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>

@@ -44,7 +44,7 @@ public class RestaurantActivity extends MvpActivity<RestaurantView,RestaurantPre
     @Override
     public void OnReserve(Restaurant restaurant){
         Intent intent = new Intent(RestaurantActivity.this, RestaurantFormActivity.class);
-        intent.putExtra("id",restaurant.getRestId());
+        intent.putExtra(Constants.ID ,restaurant.getRestId());
         startActivity(intent);
     }
 

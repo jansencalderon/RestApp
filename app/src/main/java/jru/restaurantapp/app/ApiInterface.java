@@ -3,6 +3,7 @@ package jru.restaurantapp.app;
 
 import java.util.List;
 
+import jru.restaurantapp.model.data.Reservation;
 import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.model.response.LoginResponse;
@@ -98,4 +99,12 @@ public interface ApiInterface {
 
     @POST("getRestaurants")
     Call<List<Restaurant>> getRestaurants();
+
+    @POST("sendReservation")
+    Call<ResultResponse> sendReservation(@Field("rest_id") String rest_id,@Field("user_id") String user_id,
+                                         @Field("trans_date") String trans_date, @Field("trans_head_count") String trans_head_count);
+
+
+    @POST("getReservations")
+    Call<List<Reservation>> getReservations(@Field("user_id") String user_id);
 }

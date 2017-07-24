@@ -8,6 +8,12 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 public interface RestaurantFormView extends MvpView{
 
+    void sendReservation();
+
+    void startLoading();
+
+    void stopLoading();
+
     void onPM();
 
     void onAM();
@@ -17,4 +23,8 @@ public interface RestaurantFormView extends MvpView{
     void onTomorrow();
 
     void pickTime();
+
+    void showAlert(String s);
+
+    void onReservationSuccess();
 }
