@@ -31,50 +31,54 @@
         android:onClick="@{()->view.OnItemClicked(reservation)}"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
-                        android:padding="6dp"
-                        android:layout_weight=".5"
-                        android:gravity="center"
-                        android:background="@color/greenSuccess"
-                        android:text="@{DateTimeUtils.toReadable(reservation.transDate)}"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:layout_weight=".5"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:fontFamily="sans-serif-light"
-                        android:padding="6dp"
-                        android:background="@color/greenSuccess"
-                        android:text="@{DateTimeUtils.toAMPM(reservation.transDate)}"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/bg_rounded_green"
                     android:fontFamily="sans-serif-light"
-                    android:text="@{reservation.restaurant.restName}"
-                    android:textSize="14sp" />
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="@{DateTimeUtils.toReadable(reservation.transDate)}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight=".5"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="@{DateTimeUtils.toAMPM(reservation.transDate)}"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@{`at `+ reservation.restaurant.restName}"
+                android:textSize="14sp" />
+        </LinearLayout>
 
 
     </android.support.v7.widget.CardView>

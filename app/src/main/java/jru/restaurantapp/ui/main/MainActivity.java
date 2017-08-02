@@ -16,24 +16,32 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityMainBinding;
+import jru.restaurantapp.model.data.NearestRestaurant;
+import jru.restaurantapp.model.data.Reservation;
 import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.ui.login.LoginActivity;
 import jru.restaurantapp.ui.map.MapActivity;
 import jru.restaurantapp.ui.profile.ProfileActivity;
+import jru.restaurantapp.ui.reservations.ReservationsActivity;
 import jru.restaurantapp.ui.restaurant.RestaurantActivity;
 
 
@@ -45,11 +53,13 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private MainListAdapter adapter;
+    private  Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        realm = Realm.getDefaultInstance();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(getMvpView());
         presenter.onStart();
@@ -87,6 +97,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
                 presenter.getRestaurants();
             }
         });
+
 
     }
 
@@ -143,9 +154,42 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     }
 
     @Override
-    public void setRestaurants(List<Restaurant> restaurantList) {
-            adapter.setList(restaurantList);
+    public void setRestaurants(final List<Restaurant> restaurantList) {
+
+        adapter.setList(restaurantList);
+
+        //spinner
+
+        final List<Restaurant> tempItems = realm.where(Restaurant.class).distinct("restCategory");
+        final List<String> items = new ArrayList<>();
+        if (!items.isEmpty()) {
+            items.clear();
+        }
+        items.add("Show All");
+        for (Restaurant tempItem : tempItems) {
+            items.add(tempItem.getRestCategory());
+        }
+        final RealmResults<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
+        ArrayAdapter<String> stringAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        binding.dialogSpinner.setAdapter(stringAdapter);
+        binding.dialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(items.get(position).equals("Show All")){
+                    adapter.setList(restaurants);
+                }else{
+                    adapter.setList(restaurants.where().equalTo("restCategory",items.get(position)).findAll().sort("distance", Sort.ASCENDING));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
+
+
 
 
     @Override
@@ -210,8 +254,8 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         } else if (id == R.id.map) {
             startActivity(new Intent(this, MapActivity.class));
             binding.navigationView.getMenu().getItem(0).setChecked(true);
-        } else if (id == R.id.events) {
-            // startActivity(new Intent(this, EventsActivity.class));
+        } else if (id == R.id.reservations) {
+            startActivity(new Intent(this, ReservationsActivity.class));
             binding.navigationView.getMenu().getItem(0).setChecked(true);
         } else if (id == R.id.logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

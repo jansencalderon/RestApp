@@ -12,6 +12,8 @@ import jru.restaurantapp.model.data.Reservation;
 
 public interface ReservationsView extends MvpView{
 
+    void OnItemClicked(Reservation item);
+
     void startLoading();
 
     void stopLoading();

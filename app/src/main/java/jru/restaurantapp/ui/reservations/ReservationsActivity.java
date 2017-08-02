@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
@@ -30,6 +31,10 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
         binding.setView(getMvpView());
         presenter.onStart();
 
+        setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //adapter
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ReservationListAdapter(getMvpView());
@@ -45,6 +50,10 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
     }
 
 
+    @Override
+    public void OnItemClicked(Reservation item) {
+
+    }
 
 
     @Override
@@ -64,7 +73,13 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
 
     @Override
     public void setList(List<Reservation> list) {
-        adapter.setList(list);
+        if(!list.isEmpty()){
+            adapter.setList(list);
+            binding.noResult.getRoot().setVisibility(View.GONE);
+        }else {
+            binding.noResult.getRoot().setVisibility(View.VISIBLE);
+            binding.noResult.resultText.setText("No Reservations Yet");
+        }
     }
 
     @Override

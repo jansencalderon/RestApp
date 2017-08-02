@@ -14,7 +14,7 @@
         android:title="Restaurant Finder"
         android:checkable="false" />
     <item
-        android:id="@+id/events"
+        android:id="@+id/reservations"
         android:icon="@drawable/ic_calendar_check"
         android:title="My Reservations"
         android:checkable="false" />
