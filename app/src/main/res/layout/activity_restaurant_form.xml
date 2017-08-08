@@ -30,9 +30,10 @@
             android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -106,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_selector"
                     android:clickable="true"
-                    android:hint="10"
+                    android:hint="10  "
                     android:focusable="false"
                     android:inputType="number"
                     android:maxEms="2"
@@ -150,12 +151,12 @@
                     android:textSize="30sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
             <TextView
                 android:layout_width="wrap_content"
+                android:id="@+id/restHours"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
-                android:text="@{restaurant.restHours}"
+                android:text="@{`Choose time between `+restaurant.restHours}"
                 android:padding="6dp"
                 android:textSize="12sp"/>
 
@@ -213,6 +214,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
             android:clickable="true"
+            android:id="@+id/button"
             android:orientation="horizontal">
 
             <TextView

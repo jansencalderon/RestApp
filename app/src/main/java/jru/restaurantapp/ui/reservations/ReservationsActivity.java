@@ -12,15 +12,19 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jru.restaurantapp.R;
 import jru.restaurantapp.databinding.ActivityReservationsBinding;
 import jru.restaurantapp.model.data.Reservation;
+import jru.restaurantapp.ui.reservations.tabs.ResPageFragment;
+import jru.restaurantapp.ui.reservations.tabs.ReservationListAdapter;
 
 public class ReservationsActivity extends MvpActivity<ReservationsView,ReservationsPresenter> implements ReservationsView {
 
     private ActivityReservationsBinding binding;
+    private List<String> strings = new ArrayList<>();
     private ReservationListAdapter adapter;
 
     @Override
@@ -35,12 +39,12 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //adapter
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ReservationListAdapter(getMvpView());
-        binding.recyclerView.setAdapter(adapter);
 
-
+        strings.add("Upcoming");
+        strings.add("Past");
+        binding.viewpager.setAdapter(new ReservationsPageFragmentAdapter(getSupportFragmentManager(), this, strings));
+        binding.viewpager.setOffscreenPageLimit(strings.size());
+        binding.slidingTabs.setupWithViewPager(binding.viewpager);
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -48,13 +52,6 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
             }
         });
     }
-
-
-    @Override
-    public void OnItemClicked(Reservation item) {
-
-    }
-
 
     @Override
     public void startLoading() {
@@ -69,17 +66,6 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
     @Override
     public void showAlert(String s){
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setList(List<Reservation> list) {
-        if(!list.isEmpty()){
-            adapter.setList(list);
-            binding.noResult.getRoot().setVisibility(View.GONE);
-        }else {
-            binding.noResult.getRoot().setVisibility(View.VISIBLE);
-            binding.noResult.resultText.setText("No Reservations Yet");
-        }
     }
 
     @Override

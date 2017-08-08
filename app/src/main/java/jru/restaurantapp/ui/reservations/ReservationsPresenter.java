@@ -48,7 +48,6 @@ class ReservationsPresenter extends MvpNullObjectBasePresenter<ReservationsView>
                         @Override
                         public void onSuccess() {
                             realm.close();
-                            setList();
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
@@ -73,10 +72,6 @@ class ReservationsPresenter extends MvpNullObjectBasePresenter<ReservationsView>
         });
     }
 
-    private void setList() {
-        List<Reservation> list = realm.copyFromRealm(realm.where(Reservation.class).findAll().sort("transDate", Sort.ASCENDING));
-        getView().setList(list);
-    }
 
     public void onStop() {
         realm.close();

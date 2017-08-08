@@ -74,10 +74,6 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
          */
         checker = new PermissionsChecker(this);
 
-        Glide.with(this)
-                .load(Constants.URL_IMAGE + user.getImage())
-                .error(R.drawable.ic_user)
-                .into(binding.userImage);
 
     }
 
@@ -198,12 +194,6 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
             String s = cursor.getString(column_index);
             cursor.close();
             userImage = new File(s);
-            // eventUri = eventImage.getPath();
-            Glide.with(this)
-                    .load(uri)
-                    .centerCrop()
-                    .error(R.drawable.ic_gallery)
-                    .into(binding.userImage);
 
         } else {
 

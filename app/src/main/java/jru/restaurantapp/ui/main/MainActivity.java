@@ -20,8 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import java.util.ArrayList;
@@ -53,13 +51,11 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private MainListAdapter adapter;
-    private  Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        realm = Realm.getDefaultInstance();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setView(getMvpView());
         presenter.onStart();
@@ -136,9 +132,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         CircleImageView circleImageView = (CircleImageView) binding.navigationView.getHeaderView(0).findViewById(R.id.userImage);
         // email.setText(user.getEmail());
         name.setText(user.getFullName());
-        Glide.with(this)
-                .load(Constants.URL_IMAGE + user.getImage())
-                .into(circleImageView);
 
     }
 
@@ -155,11 +148,10 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
     @Override
     public void setRestaurants(final List<Restaurant> restaurantList) {
-
         adapter.setList(restaurantList);
 
         //spinner
-
+        final Realm realm = Realm.getDefaultInstance();
         final List<Restaurant> tempItems = realm.where(Restaurant.class).distinct("restCategory");
         final List<String> items = new ArrayList<>();
         if (!items.isEmpty()) {
@@ -187,6 +179,8 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
             }
         });
+
+        realm.close();
     }
 
 
@@ -202,8 +196,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     }
 
     @Override
-    public void OnItemClicked
-            (Restaurant restaurant) {
+    public void OnItemClicked (Restaurant restaurant) {
         Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
         intent.putExtra("id",restaurant.getRestId());
         startActivity(intent);
@@ -307,7 +300,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     }
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
         super.onStop();
         presenter.onStop();
     }

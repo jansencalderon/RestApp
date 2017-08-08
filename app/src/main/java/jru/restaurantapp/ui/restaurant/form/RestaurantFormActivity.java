@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -81,9 +82,9 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
 
 
     @Override
-    public void sendReservation(){
+    public void sendReservation() {
         presenter.sendReservation(restaurant.getRestId(), App.getUser().getUserId(),
-                pickedDate+" "+pickedTime, binding.etHeadCount.getText().toString());
+                pickedDate + " " + pickedTime, binding.etHeadCount.getText().toString());
     }
 
     @Override
@@ -106,7 +107,9 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         binding.tvPM.setAlpha(1);
         binding.tvAM.setAlpha(0.5f);
         isAM = false;
-
+        if(pickedDate!=null && pickedTime!=null){
+            validateTime(binding.time.getText().toString());
+        }
     }
 
     @Override
@@ -114,14 +117,9 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         binding.tvAM.setAlpha(1);
         binding.tvPM.setAlpha(0.5f);
         isAM = true;
-        /*String tempTime = binding.time.getText().toString();
-        if (!tempTime.equals("")) {
-            if (validateTime(binding.time.getText().toString())) {
-                binding.tvAM.setAlpha(1);
-                binding.tvPM.setAlpha(0.5f);
-                isAM = true;
-            }
-        }*/
+        if(pickedDate!=null && pickedTime!=null){
+            validateTime(binding.time.getText().toString());
+        }
     }
 
 
@@ -131,7 +129,6 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE);
         binding.tvToday.setAlpha(1);
         binding.tvTomorrow.setAlpha(0.5f);
-
     }
 
     @Override
@@ -166,7 +163,6 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String time;
                 if (validateTime(flowers[which])) {
                     binding.time.setText(flowers[which]);
                 }
@@ -187,16 +183,22 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         if (isAM) {
             time = timePicked;
         } else {
-            time = (timePicked + 12) + "";
+            time = (Integer.parseInt(timePicked) + 12)+"";
         }
-        pickedTime = time + ":00:00";
+        time = time + ":00:00";
+        showAlert("Time picked: "+ time+"\nOpen: "+restaurant.getRestHoursOpen()+"\nClose: "+restaurant.getRestHoursClose());
 
-        Date picked = DateTimeUtils.String_To_Time(pickedTime);
+        Date picked = DateTimeUtils.String_To_Time(time);
 
         if (picked.before(DateTimeUtils.String_To_Time(restaurant.getRestHoursOpen())) || picked.after(DateTimeUtils.String_To_Time(restaurant.getRestHoursClose()))) {
-            showAlert("Choose time between " + restaurant.getRestHours());
+            binding.time.setError("");
+            binding.restHours.setTextColor(ContextCompat.getColor(this, R.color.redFailed));
+            binding.button.setBackgroundColor(ContextCompat.getColor(this, R.color.redFailed));
         } else {
-            pickedTime = timePicked + ":00:00";
+            pickedTime = time;
+            binding.time.setError(null);
+            binding.restHours.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            binding.button.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             return true;
         }
         return false;

@@ -80,4 +80,9 @@ public class Constants {
     public static final String VIEW_ONLY = "viewOnly";
     public static final String FIREBASE = "firebase";
     public static final String RESTAURANT_ID = "restId";
+
+
+    public static final String STATUS_ACCEPTED = "A";
+    public static final String STATUS_CANCELED = "C";
+    public static final String STATUS_PENDING = "PENDING";
 }

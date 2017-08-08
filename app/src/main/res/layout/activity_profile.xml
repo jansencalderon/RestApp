@@ -24,24 +24,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="Edit Profile" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:onClick="@{()->view.onPhotoClicked()}"
-                android:src="@drawable/ic_user" />
-
-        </LinearLayout>
+            app:title="Update Info" />
 
 
         <LinearLayout
@@ -53,13 +36,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Personal Info"
+                android:text="Details"
                 android:textStyle="bold"
                 android:textColor="@color/darkGray"
                 android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/first_name"
+                android:padding="8dp"
+                android:background="@drawable/edittext_selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -72,6 +57,8 @@
                 android:id="@+id/last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="@drawable/edittext_selector"
                 android:layout_marginTop="6dp"
                 android:hint="Last name"
                 android:inputType="textPersonName"
@@ -80,6 +67,8 @@
 
             <EditText
                 android:id="@+id/contact"
+                android:padding="8dp"
+                android:background="@drawable/edittext_selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -94,6 +83,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:focusable="false"
+                android:padding="8dp"
+                android:background="@drawable/edittext_selector"
                 android:hint="Birthday"
                 android:onClick="@{()->view.onBirthdayClicked()}"
                 android:text="@{user.birthday}"
@@ -104,6 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:padding="8dp"
+                android:background="@drawable/edittext_selector"
                 android:hint="Address"
                 android:text="@{user.address}"
                 android:textSize="14sp" />

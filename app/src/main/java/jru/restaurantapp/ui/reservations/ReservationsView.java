@@ -12,13 +12,10 @@ import jru.restaurantapp.model.data.Reservation;
 
 public interface ReservationsView extends MvpView{
 
-    void OnItemClicked(Reservation item);
 
     void startLoading();
 
     void stopLoading();
 
     void showAlert(String s);
-
-    void setList(List<Reservation> list);
 }
