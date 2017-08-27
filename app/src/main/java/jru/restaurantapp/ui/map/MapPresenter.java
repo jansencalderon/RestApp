@@ -37,7 +37,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
             @Override
             public void onResponse(Call<List<Restaurant>> call, final Response<List<Restaurant>> response) {
                 getView().stopLoading();
-                if (response.isSuccessful() || response.body().isEmpty()) {
+                if (response.isSuccessful()) {
                     final Realm realm = Realm.getDefaultInstance();
                     realm.executeTransactionAsync(new Realm.Transaction() {
                         @Override

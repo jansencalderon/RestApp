@@ -242,7 +242,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(items.get(position).equals("Show All")){
-                    setNearestRestaurants(tempItems);
+                    setNearestRestaurants(nearestRestaurants.where().findAll().sort("distance", Sort.ASCENDING));
                 }else{
                     setNearestRestaurants(nearestRestaurants.where().equalTo("restCategory",items.get(position)).findAll().sort("distance", Sort.ASCENDING));
                 }

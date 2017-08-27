@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="reservation"
+            type="jru.restaurantapp.model.data.Reservation" />
+
+        <import type="jru.restaurantapp.utils.DateTimeUtils" />
+
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:minWidth="300dp"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@{reservation.transStatus}"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{DateTimeUtils.toReadable(reservation.transDate) +` at `+DateTimeUtils.toAMPM(reservation.transDate)}"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{`for `+reservation.transHeadCount+` persons`}"
+            android:textColor="@color/gray"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@{reservation.restaurant.restName}"
+            android:textColor="@color/gray"
+            android:textSize="16sp"  />
 
 
     </LinearLayout>

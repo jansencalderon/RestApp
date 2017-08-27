@@ -82,7 +82,14 @@ public class Constants {
     public static final String RESTAURANT_ID = "restId";
 
 
-    public static final String STATUS_ACCEPTED = "A";
-    public static final String STATUS_CANCELED = "C";
+    public static final String STATUS_ACCEPTED = "APPROVED";
+    public static final String STATUS_CANCELED = "CANCELED";
+    public static final String STATUS_DENIED = "DENIED";
     public static final String STATUS_PENDING = "PENDING";
+
+    public class REALM {
+        public static final String REST_ID = "restId";
+        public static final String REST_CATEGORY = "restCategory";
+
+    }
 }

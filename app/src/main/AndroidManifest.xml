@@ -55,7 +55,8 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".ui.restaurant.RestaurantActivity" />
         <activity android:name=".ui.restaurant.form.RestaurantFormActivity" />
-        <activity android:name=".ui.reservations.ReservationsActivity"></activity>
+        <activity android:name=".ui.reservations.ReservationsActivity" />
+        <activity android:name=".ui.main.category.CategoryActivity"></activity>
     </application>
 
 </manifest>

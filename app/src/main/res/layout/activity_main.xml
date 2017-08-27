@@ -48,21 +48,14 @@
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_gravity="end"
-                    android:background="@drawable/edittext_selector">
-                    <Spinner
-                        android:id="@+id/dialog_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center"
-                        android:gravity="center"
-                        android:textColor="@color/white" />
-                </FrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/categoryRecyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="wrap_content" />
+
                 <android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/swipeRefreshLayout"
                     android:layout_width="match_parent"

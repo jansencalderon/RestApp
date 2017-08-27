@@ -234,7 +234,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
+            android:layout_margin="6dp"
+            android:background="@drawable/rounded_slight_accent"
             android:clickable="true"
             android:orientation="horizontal">
 

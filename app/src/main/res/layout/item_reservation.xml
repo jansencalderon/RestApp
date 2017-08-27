@@ -77,7 +77,7 @@
                 android:layout_marginTop="6dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
-                android:text="@{`at `+ reservation.restaurant.restName}"
+                android:text="@{reservation.restaurant.restName}"
                 android:textSize="14sp" />
         </LinearLayout>
 

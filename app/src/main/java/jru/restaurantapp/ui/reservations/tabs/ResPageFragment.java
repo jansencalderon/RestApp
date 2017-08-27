@@ -1,14 +1,17 @@
 package jru.restaurantapp.ui.reservations.tabs;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
@@ -18,9 +21,13 @@ import java.util.Arrays;
 import java.util.List;
 import io.realm.Realm;
 import jru.restaurantapp.R;
+import jru.restaurantapp.app.Constants;
+import jru.restaurantapp.databinding.DialogMarkerClickBinding;
+import jru.restaurantapp.databinding.DialogReservationBinding;
 import jru.restaurantapp.databinding.FragmentResPageBinding;
 import jru.restaurantapp.model.data.Reservation;
 import jru.restaurantapp.model.data.Restaurant;
+import jru.restaurantapp.ui.map.MapActivity;
 
 /**
  * Created by Sen on 2/28/2017.
@@ -103,7 +110,7 @@ public class ResPageFragment extends MvpFragment<ResPageView, ResPagePresenter> 
         if (type.equals("Today")) {
             binding.noResult.resultText.setText("No Reservations for Today\nSee Upcoming");
         } else {
-            binding.noResult.resultText.setText("No Upcoming Events");
+            binding.noResult.resultText.setText("No Upcoming Reservations");
         }
         if (count > 0) {
             binding.noResult.noResultLayout.setVisibility(View.GONE);
@@ -114,7 +121,38 @@ public class ResPageFragment extends MvpFragment<ResPageView, ResPagePresenter> 
 
     @Override
     public void OnItemClicked(Reservation reservation) {
-        showAlert(reservation.getRestId().toString());
+        if(!type.equals("Upcoming")){
+            return;
+        }
+        DialogReservationBinding binding = DataBindingUtil.inflate(
+                getActivity().getLayoutInflater(),
+                R.layout.dialog_reservation,
+                null,
+                false);
+        binding.setReservation(reservation);
+
+        switch (reservation.getTransStatus()){
+            case Constants.STATUS_PENDING:
+                binding.status
+                        .setTextColor(ContextCompat.getColor(getActivity(),
+                                R.color.orange));
+                break;
+            case Constants.STATUS_ACCEPTED:
+                binding.status
+                        .setTextColor(ContextCompat.getColor(getActivity(),
+                                R.color.greenSuccess));
+                break;
+            case Constants.STATUS_CANCELED:
+                binding.status
+                        .setTextColor(ContextCompat.getColor(getActivity(),
+                                R.color.redFailed));
+                break;
+        }
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(binding.getRoot());
+        dialog.show();
     }
 
 

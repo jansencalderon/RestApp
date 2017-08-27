@@ -18,4 +18,6 @@ public interface ReservationsView extends MvpView{
     void stopLoading();
 
     void showAlert(String s);
+
+    void setData();
 }

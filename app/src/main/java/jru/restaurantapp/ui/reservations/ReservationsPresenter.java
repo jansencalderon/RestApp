@@ -35,7 +35,7 @@ class ReservationsPresenter extends MvpNullObjectBasePresenter<ReservationsView>
         App.getInstance().getApiInterface().getReservations(user.getUserId()+"").enqueue(new Callback<List<Reservation>>() {
             @Override
             public void onResponse(Call<List<Reservation>> call, final Response<List<Reservation>> response) {
-                getView().stopLoading();
+                    getView().stopLoading();
                 if (response.isSuccessful()) {
                     final Realm realm = Realm.getDefaultInstance();
                     realm.executeTransactionAsync(new Realm.Transaction() {
@@ -48,6 +48,7 @@ class ReservationsPresenter extends MvpNullObjectBasePresenter<ReservationsView>
                         @Override
                         public void onSuccess() {
                             realm.close();
+                            getView().setData();
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override

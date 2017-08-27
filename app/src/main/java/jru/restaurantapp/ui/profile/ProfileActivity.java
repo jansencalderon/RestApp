@@ -2,6 +2,7 @@ package jru.restaurantapp.ui.profile;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,6 +32,7 @@ import io.realm.Realm;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityProfileBinding;
+import jru.restaurantapp.databinding.DialogChangePasswordBinding;
 import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.utils.PermissionsActivity;
 import jru.restaurantapp.utils.PermissionsChecker;
@@ -50,16 +52,16 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
     private File userImage;
     private ProgressDialog progressDialog;
     private User user;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        //setRetainInstance(true);
         realm = Realm.getDefaultInstance();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
         binding.setView(getMvpView());
-        binding.toolbar.setTitle("");
+        binding.toolbar.setTitle("Account Details");
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -69,12 +71,47 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
         presenter.onStart();
 
-        /**
-         * Permission Checker Initialized
-         */
         checker = new PermissionsChecker(this);
 
 
+    }
+
+
+    @Override
+    public void onChangePassword(){
+        dialog = new Dialog(ProfileActivity.this);
+        final DialogChangePasswordBinding dialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_change_password,
+                null,
+                false);
+        dialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialogBinding.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.changePassword(dialogBinding.etCurrPassword.getText().toString(),
+                        dialogBinding.etNewPassword.getText().toString(),
+                        dialogBinding.etConfirmPass.getText().toString());
+            }
+        });
+        dialog.setContentView(dialogBinding.getRoot());
+        dialog.setCancelable(false);
+        dialog.show();
+
+    }
+
+
+    @Override
+    public void onPasswordChanged() {
+        if(dialog.isShowing()){
+            dialog.dismiss();
+            showAlert("Password Updated");
+        }
     }
 
     /***
@@ -98,21 +135,12 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
      ***/
     @Override
     public void onEdit() {
-        /*if (userImage != null) {
-            presenter.updateUserWithImage(userImage, user.getUserId() + "",
-                    binding.firstName.getText().toString(),
-                    binding.lastName.getText().toString(),
-                    binding.contact.getText().toString(),
-                    binding.birthday.getText().toString(),
-                    binding.address.getText().toString());
-        } else {
             presenter.updateUser(user.getUserId() + "",
                     binding.firstName.getText().toString(),
                     binding.lastName.getText().toString(),
                     binding.contact.getText().toString(),
                     binding.birthday.getText().toString(),
                     binding.address.getText().toString());
-        }*/
     }
 
     @Override

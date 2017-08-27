@@ -74,7 +74,7 @@ public class ReservationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 break;
         }
 
-        if(DateTimeUtils.getDateTodayEnd().after(list.get(position).getTransDate())){
+        if(DateTimeUtils.getDateToday().after(list.get(position).getTransDate())){
             viewHolder.itemReservationBinding.status
                     .setBackground(ContextCompat.getDrawable(viewHolder.itemView.getContext(),
                             R.drawable.bg_rounded_gray));

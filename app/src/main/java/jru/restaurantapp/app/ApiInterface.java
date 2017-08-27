@@ -53,6 +53,11 @@ public interface ApiInterface {
                                   @Field(Constants.VER_CODE) String code);
 
 
+    @FormUrlEncoded
+    @POST("changePassword")
+    Call<User> changePassword(@Field(Constants.USER_ID) String user_id,
+                                        @Field(Constants.PASSWORD) String password);
+
     @Multipart
     @POST("updateUserWithImage")
     Call<User> updateUserWithImage(@Part MultipartBody.Part image,

@@ -34,9 +34,11 @@ import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.databinding.ActivityMainBinding;
 import jru.restaurantapp.model.data.NearestRestaurant;
 import jru.restaurantapp.model.data.Reservation;
+import jru.restaurantapp.model.data.RestCategory;
 import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 import jru.restaurantapp.ui.login.LoginActivity;
+import jru.restaurantapp.ui.main.category.CategoryActivity;
 import jru.restaurantapp.ui.map.MapActivity;
 import jru.restaurantapp.ui.profile.ProfileActivity;
 import jru.restaurantapp.ui.reservations.ReservationsActivity;
@@ -51,6 +53,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private MainListAdapter adapter;
+    private MainCategoryAdapter adapterCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +85,14 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         binding.navigationView.getMenu().getItem(0).setChecked(true);
 
         //adapter
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new MainListAdapter(getMvpView());
         binding.recyclerView.setAdapter(adapter);
+
+
+        binding.categoryRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        adapterCategory = new MainCategoryAdapter(getMvpView());
+        binding.categoryRecyclerview.setAdapter(adapterCategory);
 
 
         binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -153,32 +161,16 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         //spinner
         final Realm realm = Realm.getDefaultInstance();
         final List<Restaurant> tempItems = realm.where(Restaurant.class).distinct("restCategory");
-        final List<String> items = new ArrayList<>();
+        final List<RestCategory> items = new ArrayList<>();
         if (!items.isEmpty()) {
             items.clear();
         }
-        items.add("Show All");
         for (Restaurant tempItem : tempItems) {
-            items.add(tempItem.getRestCategory());
+            RestCategory categoryTemp = new RestCategory();
+            categoryTemp.setCategoryName(tempItem.getRestCategory());
+            items.add(categoryTemp);
         }
-        final RealmResults<Restaurant> restaurants = realm.where(Restaurant.class).findAll();
-        ArrayAdapter<String> stringAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        binding.dialogSpinner.setAdapter(stringAdapter);
-        binding.dialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(items.get(position).equals("Show All")){
-                    adapter.setList(restaurants);
-                }else{
-                    adapter.setList(restaurants.where().equalTo("restCategory",items.get(position)).findAll().sort("distance", Sort.ASCENDING));
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        adapterCategory.setList(items);
 
         realm.close();
     }
@@ -203,9 +195,16 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     }
 
     @Override
+    public void OnCategoryClicked(RestCategory restCategory){
+        Intent intent = new Intent(MainActivity.this,CategoryActivity.class);
+        intent.putExtra(Constants.REALM.REST_CATEGORY,restCategory.getCategoryName().trim());
+        startActivity(intent);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -301,7 +300,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
     @Override
     public void onDestroy() {
-        super.onStop();
+        super.onDestroy();
         presenter.onStop();
     }
 

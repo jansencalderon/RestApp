@@ -186,7 +186,7 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
             time = (Integer.parseInt(timePicked) + 12)+"";
         }
         time = time + ":00:00";
-        showAlert("Time picked: "+ time+"\nOpen: "+restaurant.getRestHoursOpen()+"\nClose: "+restaurant.getRestHoursClose());
+      //  showAlert("Time picked: "+ time+"\nOpen: "+restaurant.getRestHoursOpen()+"\nClose: "+restaurant.getRestHoursClose());
 
         Date picked = DateTimeUtils.String_To_Time(time);
 
@@ -211,7 +211,8 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
 
     @Override
     public void onReservationSuccess() {
-        showAlert("SUCCESS");
+        showAlert("Transaction Successful\nYou can go to MY RESERVATIONS for more details");
+        finish();
     }
 
 

@@ -42,15 +42,8 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
 
         strings.add("Upcoming");
         strings.add("Past");
-        binding.viewpager.setAdapter(new ReservationsPageFragmentAdapter(getSupportFragmentManager(), this, strings));
-        binding.viewpager.setOffscreenPageLimit(strings.size());
-        binding.slidingTabs.setupWithViewPager(binding.viewpager);
-        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.getReservations();
-            }
-        });
+
+
     }
 
     @Override
@@ -83,6 +76,19 @@ public class ReservationsActivity extends MvpActivity<ReservationsView,Reservati
     protected void onDestroy() {
         super.onDestroy();
         presenter.onStop();
+    }
+
+    @Override
+    public void setData(){
+        binding.viewpager.setAdapter(new ReservationsPageFragmentAdapter(getSupportFragmentManager(), this, strings));
+        binding.viewpager.setOffscreenPageLimit(strings.size());
+        binding.slidingTabs.setupWithViewPager(binding.viewpager);
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getReservations();
+            }
+        });
     }
 
     @NonNull

@@ -14,6 +14,10 @@ public interface ProfileView extends MvpView{
 
     void showAlert(String message);
 
+    void onChangePassword();
+
+    void onPasswordChanged();
+
     void onEdit();
 
     void startLoading();

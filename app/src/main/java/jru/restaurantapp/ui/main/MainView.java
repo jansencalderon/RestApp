@@ -4,6 +4,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import java.util.List;
 
+import jru.restaurantapp.model.data.RestCategory;
 import jru.restaurantapp.model.data.Restaurant;
 import jru.restaurantapp.model.data.User;
 
@@ -30,4 +31,6 @@ public interface MainView extends MvpView {
     void internet(Boolean status);
 
     void OnItemClicked(Restaurant restaurant);
+
+    void OnCategoryClicked (RestCategory restCategory);
 }

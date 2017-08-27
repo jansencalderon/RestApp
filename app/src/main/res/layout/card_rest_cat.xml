@@ -8,11 +8,11 @@
 
         <variable
             name="view"
-            type="jru.restaurantapp.ui.map.MapView" />
+            type="jru.restaurantapp.ui.main.category.CategoryView" />
 
         <variable
             name="restaurant"
-            type="jru.restaurantapp.model.data.NearestRestaurant" />
+            type="jru.restaurantapp.model.data.Restaurant" />
 
         <variable
             name="contentVisible"
@@ -24,27 +24,33 @@
         android:id="@+id/restCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:clickable="true"
         android:foreground="?android:selectableItemBackground"
         android:onClick="@{()->view.OnItemClicked(restaurant)}"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/restImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#eeeeee"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/restImage"
                 android:orientation="vertical"
-                android:layout_weight=".8"
-                android:padding="6dp">
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,53 +58,44 @@
                     android:drawableEnd="@drawable/ic_restaurant"
                     android:drawableTint="#777777"
                     android:text="@{restaurant.restName}"
-                    android:textSize="16sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     tools:targetApi="m" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="@{restaurant.restCategory}"
-                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@{restaurant.restCategory}"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:ellipsize="end"
-                    android:maxLines="1"
-                    android:visibility="gone"
+                    android:maxLines="2"
                     android:text="@{restaurant.restAdd}"
                     android:textSize="12sp" />
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight=".2"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@color/lightGray"
-                android:layout_height="match_parent">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{restaurant.distance+``}"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="KM/S"
+                    android:text="@{restaurant.restHours}"
                     android:textSize="12sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`Capacity: `+restaurant.restSlotMax+` persons`}"
+                    android:textSize="12sp" />
+
+
             </LinearLayout>
-        </LinearLayout>
+
+        </RelativeLayout>
 
 
     </android.support.v7.widget.CardView>

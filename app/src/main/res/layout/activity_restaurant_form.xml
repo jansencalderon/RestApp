@@ -212,8 +212,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/rounded_slight_accent"
             android:clickable="true"
+            android:layout_margin="6dp"
             android:id="@+id/button"
             android:orientation="horizontal">
 

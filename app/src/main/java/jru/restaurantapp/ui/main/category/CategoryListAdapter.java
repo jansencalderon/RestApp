@@ -1,4 +1,4 @@
-package jru.restaurantapp.ui.main;
+package jru.restaurantapp.ui.main.category;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -12,24 +12,25 @@ import java.util.List;
 
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.Constants;
-import jru.restaurantapp.databinding.CardRestBinding;
+import jru.restaurantapp.databinding.CardRestCatBinding;
 import jru.restaurantapp.model.data.Restaurant;
+import jru.restaurantapp.ui.main.category.CategoryView;
 
 /**
  * Created by Mark Jansen Calderon on 1/12/2017.
  */
 
-public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private MainView mainView;
+    private CategoryView view;
     private List<Restaurant> list;
     private static final int VIEW_TYPE_MORE = 1;
     private static final int VIEW_TYPE_DEFAULT = 0;
     private boolean loading;
 
-    public MainListAdapter(MainView mainView) {
-        this.mainView = mainView;
+    public CategoryListAdapter(CategoryView view) {
+        this.view = view;
         list = new ArrayList<>();
 
     }
@@ -42,20 +43,20 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardRestBinding cardRestBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.getContext()), R.layout.card_rest, parent, false);
-        return new MainListAdapter.ViewHolder(cardRestBinding);
+        CardRestCatBinding binding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()), R.layout.card_rest_cat, parent, false);
+        return new CategoryListAdapter.ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MainListAdapter.ViewHolder viewHolder = (MainListAdapter.ViewHolder) holder;
-        viewHolder.cardRestBinding.setRestaurant(list.get(position));
-        viewHolder.cardRestBinding.setView(mainView);
+        CategoryListAdapter.ViewHolder viewHolder = (CategoryListAdapter.ViewHolder) holder;
+        viewHolder.binding.setRestaurant(list.get(position));
+        viewHolder.binding.setView(view);
         Glide.with(viewHolder.itemView.getContext())
                 .load(Constants.URL_IMAGE + list.get(position).getRestImage().concat(".jpg"))
                 .centerCrop()
-                .into(viewHolder.cardRestBinding.restImage);
+                .into(viewHolder.binding.restImage);
 
     }
 
@@ -78,11 +79,11 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private CardRestBinding cardRestBinding;
+        private CardRestCatBinding binding;
 
-        public ViewHolder(CardRestBinding cardRestBinding) {
-            super(cardRestBinding.getRoot());
-            this.cardRestBinding = cardRestBinding;
+        public ViewHolder(CardRestCatBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 
