@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Glide.with(viewHolder.itemView.getContext())
                 .load(Constants.URL_IMAGE + list.get(position).getRestImage().concat(".jpg"))
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(viewHolder.cardRestBinding.restImage);
 
     }

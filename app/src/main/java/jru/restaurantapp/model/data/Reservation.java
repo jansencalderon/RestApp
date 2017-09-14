@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Jansen on 7/24/2017.
@@ -13,6 +14,7 @@ import io.realm.RealmObject;
 
 public class Reservation extends RealmObject {
 
+    @PrimaryKey
     @SerializedName("trans_id")
     @Expose
     private Integer transId;

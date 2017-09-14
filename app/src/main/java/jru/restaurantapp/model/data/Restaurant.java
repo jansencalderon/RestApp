@@ -7,6 +7,7 @@ import java.lang.String;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Jansen on 6/29/2017.
@@ -16,6 +17,7 @@ public class Restaurant extends RealmObject{
 
     @SerializedName("rest_id")
     @Expose
+    @PrimaryKey
     private Integer restId;
     @SerializedName("rest_name")
     @Expose
@@ -67,6 +69,15 @@ public class Restaurant extends RealmObject{
     @SerializedName("products")
     @Expose
     private RealmList<Product> products;
+
+    @SerializedName("reservations_today")
+    @Expose
+    private RealmList<Reservation> reservationsToday;
+
+
+    @SerializedName("reservations_tomorrow")
+    @Expose
+    private RealmList<Reservation> reservationsTomorrow;
 
     private double distance;
 
@@ -205,5 +216,21 @@ public class Restaurant extends RealmObject{
 
     public void setProducts(RealmList<Product> products) {
         this.products = products;
+    }
+
+    public RealmList<Reservation> getReservationsToday() {
+        return reservationsToday;
+    }
+
+    public void setReservationsToday(RealmList<Reservation> reservationsToday) {
+        this.reservationsToday = reservationsToday;
+    }
+
+    public RealmList<Reservation> getReservationsTomorrow() {
+        return reservationsTomorrow;
+    }
+
+    public void setReservationsTomorrow(RealmList<Reservation> reservationsTomorrow) {
+        this.reservationsTomorrow = reservationsTomorrow;
     }
 }

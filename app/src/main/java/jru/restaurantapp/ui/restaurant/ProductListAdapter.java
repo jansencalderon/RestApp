@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Glide.with(viewHolder.itemView.getContext())
                 .load(Constants.URL_IMAGE + list.get(position).getProdImage())
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(viewHolder.itemProdBinding.imageView);
 
     }

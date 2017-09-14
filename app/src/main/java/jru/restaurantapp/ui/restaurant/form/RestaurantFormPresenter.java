@@ -1,7 +1,6 @@
 package jru.restaurantapp.ui.restaurant.form;
 
 import android.util.Log;
-import android.widget.EditText;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
@@ -30,7 +29,7 @@ public class RestaurantFormPresenter extends MvpNullObjectBasePresenter<Restaura
     }
 
     Restaurant getRestaurant(int id){
-        return realm.where(Restaurant.class).equalTo(Constants.RESTAURANT_ID, id).findFirst();
+        return realm.copyFromRealm( realm.where(Restaurant.class).equalTo(Constants.RESTAURANT_ID, id).findFirst());
     }
 
     void onStop() { realm.close();
@@ -38,7 +37,7 @@ public class RestaurantFormPresenter extends MvpNullObjectBasePresenter<Restaura
 
     void sendReservation(Integer restId, int userId, String date, String headCount) {
         getView().startLoading();
-        if(!headCount.equals("")){
+        if(!headCount.equals("") || !date.equals("")){
             App.getInstance().getApiInterface().sendReservation(restId+"", userId+"", date,headCount).enqueue(new Callback<ResultResponse>() {
                 @Override
                 public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {

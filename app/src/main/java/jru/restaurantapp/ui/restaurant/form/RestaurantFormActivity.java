@@ -5,26 +5,24 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import io.realm.Realm;
 import jru.restaurantapp.R;
 import jru.restaurantapp.app.App;
 import jru.restaurantapp.databinding.ActivityRestaurantFormBinding;
 import jru.restaurantapp.model.data.Restaurant;
-import jru.restaurantapp.ui.register.RegisterActivity;
 import jru.restaurantapp.utils.DateTimeUtils;
 
 
@@ -36,6 +34,7 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
     private boolean isAM = true;
     private Restaurant restaurant;
     private ProgressDialog progressDialog;
+    private RestaurantFormListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,10 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         Intent i = getIntent();
         restaurant = presenter.getRestaurant(i.getIntExtra("id", 0));
         binding.setRestaurant(restaurant);
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        adapter = new RestaurantFormListAdapter(getMvpView());
+        binding.recyclerView.setAdapter(adapter);
 
     }
 
@@ -83,8 +86,20 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
 
     @Override
     public void sendReservation() {
-        presenter.sendReservation(restaurant.getRestId(), App.getUser().getUserId(),
-                pickedDate + " " + pickedTime, binding.etHeadCount.getText().toString());
+        String headcount = binding.etHeadCount.getText().toString();
+        if (pickedDate.equals("") || pickedTime.equals("")) {
+            showAlert("Please input when is the reservation");
+        } else if (headcount.equals("")) {
+            showAlert("Please input headcount");
+        } else if (Integer.parseInt(headcount) > restaurant.getRestSlotMax()) {
+            showAlert("Sorry, we can't accommodate you\nOur capacity is only limited to " + restaurant.getRestSlotMax());
+        } else {
+
+            presenter.sendReservation(restaurant.getRestId(), App.getUser().getUserId(),
+                    pickedDate + " " + pickedTime, binding.etHeadCount.getText().toString());
+        }
+
+
     }
 
     @Override
@@ -107,7 +122,7 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         binding.tvPM.setAlpha(1);
         binding.tvAM.setAlpha(0.5f);
         isAM = false;
-        if(pickedDate!=null && pickedTime!=null){
+        if (pickedDate != null && pickedTime != null) {
             validateTime(binding.time.getText().toString());
         }
     }
@@ -117,7 +132,7 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         binding.tvAM.setAlpha(1);
         binding.tvPM.setAlpha(0.5f);
         isAM = true;
-        if(pickedDate!=null && pickedTime!=null){
+        if (pickedDate != null && pickedTime != null) {
             validateTime(binding.time.getText().toString());
         }
     }
@@ -129,6 +144,7 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE);
         binding.tvToday.setAlpha(1);
         binding.tvTomorrow.setAlpha(0.5f);
+        adapter.setList(restaurant.getReservationsToday());
     }
 
     @Override
@@ -137,6 +153,7 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         binding.tvToday.setAlpha(0.5f);
         Calendar c = Calendar.getInstance();
         pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + (c.get(Calendar.DATE) + 1);
+        adapter.setList(restaurant.getReservationsTomorrow());
 
     }
 
@@ -183,17 +200,17 @@ public class RestaurantFormActivity extends MvpActivity<RestaurantFormView, Rest
         if (isAM) {
             time = timePicked;
         } else {
-            time = (Integer.parseInt(timePicked) + 12)+"";
+            time = (Integer.parseInt(timePicked) + 12) + "";
         }
         time = time + ":00:00";
-      //  showAlert("Time picked: "+ time+"\nOpen: "+restaurant.getRestHoursOpen()+"\nClose: "+restaurant.getRestHoursClose());
+        //  showAlert("Time picked: "+ time+"\nOpen: "+restaurant.getRestHoursOpen()+"\nClose: "+restaurant.getRestHoursClose());
 
         Date picked = DateTimeUtils.String_To_Time(time);
 
         if (picked.before(DateTimeUtils.String_To_Time(restaurant.getRestHoursOpen())) || picked.after(DateTimeUtils.String_To_Time(restaurant.getRestHoursClose()))) {
             binding.time.setError("");
             binding.restHours.setTextColor(ContextCompat.getColor(this, R.color.redFailed));
-            binding.button.setBackgroundColor(ContextCompat.getColor(this, R.color.redFailed));
+            binding.button.setBackgroundColor(ContextCompat.getColor(this, R.color.lightGray));
         } else {
             pickedTime = time;
             binding.time.setError(null);

@@ -5,8 +5,6 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 import jru.restaurantapp.app.Constants;
 import jru.restaurantapp.model.data.Restaurant;
 
@@ -26,9 +24,9 @@ public class CategoryPresenter extends MvpNullObjectBasePresenter<CategoryView> 
     }
 
     public List<Restaurant> getRestaurants(String category){
-        return realm.where(Restaurant.class)
+        return realm.copyFromRealm(realm.where(Restaurant.class)
                 .equalTo(Constants.REALM.REST_CATEGORY, category.trim())
-                .findAllSorted(Constants.REALM.REST_ID);
+                .findAllSorted(Constants.REALM.REST_ID));
     }
 
     void onStop(){

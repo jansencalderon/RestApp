@@ -12,7 +12,9 @@
             name="view"
             type="jru.restaurantapp.ui.restaurant.form.RestaurantFormView" />
     </data>
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -159,6 +161,19 @@
                 android:text="@{`Choose time between `+restaurant.restHours}"
                 android:padding="6dp"
                 android:textSize="12sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="?selectableItemBackground"
+                android:layout_marginBottom="10dp"
+                android:text="Reserved Slots"
+                android:textColor="@color/redFailed"
+                android:textSize="16sp"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/recyclerView"
+                android:layout_height="wrap_content" />
 
             <include
                 android:layout_height="1dp"
@@ -229,4 +244,5 @@
                 android:textSize="20sp" />
         </LinearLayout>
     </RelativeLayout>
+</ScrollView>
 </layout>
